@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Previewer</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #input-container {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #preview-container {
+            width: 50%;
+            border-left: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80%;
+            resize: none;
+        }
+
+        button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+    <div id="input-container">
+        <textarea id="html-input" placeholder=" Paste your HTML code here then click the Run button "></textarea>
+        <br>
+        <button id="run-button"> Run! </button>
+        <button id="redo-button"> Redone </button>
+    </div>
+    <div id="preview-container">
+        <iframe id="preview-frame" width="100%" height="100%"></iframe>
+    </div>
+    <script>
+        const htmlInput = document.getElementById('html-input');
+        const runButton = document.getElementById('run-button');
+        const redoButton = document.getElementById('redo-button');
+        const previewFrame = document.getElementById('preview-frame');
+
+        let history = [];
+        let currentIndex = -1;
+
+        htmlInput.addEventListener('input', () => {
+            history = history.slice(0, currentIndex + 1);
+            history.push(htmlInput.value);
+            currentIndex++;
+        });
+
+        runButton.addEventListener('click', () => {
+            const htmlContent = htmlInput.value;
+            previewFrame.srcdoc = htmlContent;
+        });
+
+        redoButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                htmlInput.value = history[currentIndex];
+                const htmlContent = htmlInput.value;
+                previewFrame.srcdoc = htmlContent;
+            }
+        });
+    </script>
+</body>
+</html>    
