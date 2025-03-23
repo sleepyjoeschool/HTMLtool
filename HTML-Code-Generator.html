@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            min-height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HTML Code Generator</h1>
+    <p> Warning: Your code will BE PERMANENTLY LOST if you refresh to switch off this page! </p>
+    <button onclick="addHeading()"> Add a heading </button>
+    <button onclick="addText()"> Add some text </button>
+    <button onclick="addItalicText()"> Add some italic text </button>
+    <button onclick="addBoldText()"> Add some BOLD text </button>
+    <button onclick="addImage()"> Add an image </button>
+    <button onclick="addFavicon()"> Enable a favicon </button>
+    <button onclick="addTable()"> Add a table </button>
+    <button onclick="addLink()"> Add a hyperlink </button>
+    <button onclick="copyOutput()"> Copy your code </button>
+    <button onclick="downloadOutput()"> Download your code </button>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+
+        function addHeading() {
+            const text = prompt(' Text for your heading? ');
+            if (text) {
+                output.innerHTML += `<h1>${text}</h1>`;
+            }
+        }
+
+        function addText() {
+            const text = prompt(' Content for the text? ');
+            if (text) {
+                output.innerHTML += `<p>${text}</p>`;
+            }
+        }
+
+        function addItalicText() {
+            const text = prompt('  Text for the text? (Italic) ');
+            if (text) {
+                output.innerHTML += `<i>${text}</i><br>`;
+            }
+        }
+
+        function addBoldText() {
+            const text = prompt('  Text for the text? (Bold) ');
+            if (text) {
+                output.innerHTML += `<b>${text}</b><br>`;
+            }
+        }
+
+        function addImage() {
+            const url = prompt(' The URL link for that image? ');
+            if (url) {
+                output.innerHTML += `<img src="${url}" alt="Image">`;
+            }
+        }
+
+        function addFavicon() {
+            const url = prompt(' The URL of "favicon.ico"? ');
+            if (url) {
+                const link = document.createElement('link');
+                link.rel = 'icon';
+                link.href = url;
+                document.head.appendChild(link);
+            }
+        }
+
+        function addTable() {
+            const rows = prompt(' Quantity of row? ');
+            const cols = prompt(' Quantity of column? ');
+            if (rows && cols) {
+                let table = '<table border="1">';
+                for (let i = 0; i < rows; i++) {
+                    table += '<tr>';
+                    for (let j = 0; j < cols; j++) {
+                        table += '<td> Table </td>';
+                    }
+                    table += '</tr>';
+                }
+                table += '</table>';
+                output.innerHTML += table;
+            }
+        }
+
+        function addLink() {
+            const url = prompt(' The URL for your hyperlink? ');
+            const text = prompt(' What do you want to display on the page (as text)? ');
+            if (url && text) {
+                output.innerHTML += `<a href="${url}">${text}</a>`;
+            }
+        }
+
+        function copyOutput() {
+            const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title> HTML Code </title></head><body>${output.innerHTML}</body></html>`;
+            const textarea = document.createElement('textarea');
+            textarea.value = html;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(' The code is now in your clipboard! ');
+        }
+
+        function downloadOutput() {
+            const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title> HTML code </title></head><body>${output.innerHTML}</body></html>`;
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated_page.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
